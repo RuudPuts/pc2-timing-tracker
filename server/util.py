@@ -1,10 +1,6 @@
 from datetime import datetime
 
 
-def mps2kph(speed):
-    return 3.6 * speed
-
-
 def sec2time(sec, n_msec=3):
     if sec < 0:
         return "00:00.000"

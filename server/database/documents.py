@@ -1,4 +1,4 @@
-from server.database.db import db
+from .db import db
 
 
 class Driver(db.Document):

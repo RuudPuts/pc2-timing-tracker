@@ -11,7 +11,8 @@ $ pip3 install -r requirements.txt
 ## Client
 
 ```
-python3 client.py
+$ cd client
+$ python3 main.py
 ```
 
 This is the application which records the laptimes. It needs a server passed when running on which the laptimes will be stored.
@@ -20,8 +21,9 @@ In case sending of laptimes fails it'll cache them locally and sent on the next 
 ## Server
 
 ```
-docker-compose up -d 
-python3 server.py
+$ cd server
+$ docker-compose up -d 
+$ python3 main.py
 ```
 
-This hosts the webserver to list leaderboards and transmit times to. It stores all data in a Mongo database which can be deployed using `docker-compose`.
+This hosts the webserver to list leaderboards and transmit times to. It stores all data in a Mongo database which can be deployed using `docker-compose`. The webserver will be hosted on port 5000.

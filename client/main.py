@@ -3,8 +3,8 @@ import socket
 import time
 import json
 from io import BytesIO
-from client import Packet, TelemetryPacket, ParticipantInfoStringsPacket
-from util import *
+from lib import Packet, TelemetryPacket, ParticipantInfoStringsPacket
+from util import sec2time, mps2kph
 import argparse
 
 if __name__ == '__main__':

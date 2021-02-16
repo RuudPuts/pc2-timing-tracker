@@ -3,9 +3,8 @@ from flask import Flask, Response, request, render_template
 from flask_bootstrap import Bootstrap
 from mongoengine import DoesNotExist
 
-from util import *
-from server.database.db import initialize_db
-from server.database.documents import Driver, Car, Track, LapTime
+from database import *
+from util import sec2time, sec2date
 
 app = Flask(__name__)
 app.config['MONGODB_SETTINGS'] = {

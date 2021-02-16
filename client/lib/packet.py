@@ -1,7 +1,7 @@
 from io import BytesIO
 import binio
 
-from client.lib.enums import FlagColour, FlagReason, GameState, PitMode, PitSchedule, RaceState, Sector, SessionState, Tyres
+from .enums import FlagColour, FlagReason, GameState, PitMode, PitSchedule, RaceState, Sector, SessionState, Tyres
 
 
 class Packet(object):
