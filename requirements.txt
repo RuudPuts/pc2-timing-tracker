@@ -1,0 +1,6 @@
+requests
+binio
+pymongo
+flask
+flask-mongoengine
+bootstrap-flask
