@@ -1,0 +1,1 @@
+All templates in this folder cloned from https://github.com/greyli/bootstrap-flask
