@@ -82,6 +82,7 @@ def submit_lap_time():
     data_lap_time = data["time"]
 
     print("Receiving lap time...")
+    print(data)
 
     # Fetch or store driver
     try:
