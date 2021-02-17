@@ -36,7 +36,7 @@ def log_game_state(state: GameState):
         log.append("")
         log.append("")
 
-    if state.has_participants_data:
+    if state.has_participants_data and len(state.participants) > 0:
         log.append("Leaderboard")
         for participant in state.participants:
             log.append("{}. {} - Lap {}".format(participant.position, participant.name, participant.current_lap))
