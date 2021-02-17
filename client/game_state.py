@@ -7,6 +7,20 @@ class GameState:
         self.__last_telemetry_packet = None
         self.__last_participants_info_packet = None
 
+        self.driver = None
+        self.car = None
+        self.track = None
+
+        self.current_lap = None
+        self.speed = None
+        self.current_gear = None
+        self.number_of_gears = None
+
+        self.current_lap_time = None
+        self.last_lap_time = None
+        self.session_best_lap_time = None
+        self.personal_best_lap_time = None
+
         self.participants = []
 
     def process_packet(self, packet: Packet):
@@ -43,7 +57,7 @@ class GameState:
         self.current_lap_time = packet['currentTime']
         self.last_lap_time = packet['lastLapTime']
         self.session_best_lap_time = packet['bestLapTime']
-        self.personalBest_lap_time = packet['personalFastestLapTime']
+        self.personal_best_lap_time = packet['personalFastestLapTime']
 
     def __process_participant_info_packet(self, packet: ParticipantInfoStringsPacket):
         self.__last_participants_info_packet = packet

@@ -32,7 +32,7 @@ def log_game_state(state: GameState):
         log.append("Current lap       {}".format(sec2time(state.current_lap_time)))
         log.append("Last lap          {}".format(sec2time(state.last_lap_time)))
         log.append("Session best lap  {}".format(sec2time(state.session_best_lap_time)))
-        log.append("Personal best lap {}".format(sec2time(state.personalBest_lap_time)))
+        log.append("Personal best lap {}".format(sec2time(state.personal_best_lap_time)))
         log.append("")
         log.append("")
 
