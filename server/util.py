@@ -20,4 +20,4 @@ def sec2time(sec, n_msec=3):
 
 
 def sec2date(sec):
-    return datetime.fromtimestamp(sec).strftime("%d %B %Y %I:%M:%S")
+    return datetime.fromtimestamp(sec).strftime("%d %B %Y %H:%M:%S")

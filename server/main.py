@@ -1,5 +1,3 @@
-import json
-
 from bson import ObjectId
 from flask import Flask, Response, request, render_template
 from flask_bootstrap import Bootstrap
@@ -73,10 +71,10 @@ def get_lap_times():
 @app.route("/laptime/submit", methods=['POST'])
 def submit_lap_time():
     data = request.get_json()
-    # data = json.loads(request.data)
 
     print("Receiving lap time...")
     print(data)
+    print("")
 
     data_driver = data["driver"]
     data_car_name = data["car"]["name"]
@@ -93,23 +91,17 @@ def submit_lap_time():
     except DoesNotExist:
         driver = Driver(name=data_driver).save()
 
-    print(driver.to_json())
-
     # Fetch or store car
     try:
         car = Car.objects.get(name=data_car_name, type=data_car_class)
     except DoesNotExist:
         car = Car(name=data_car_name, type=data_car_class).save()
 
-    print(car.to_json())
-
     # Fetch or store track
     try:
         track = Track.objects.get(name=data_track_name, variant=data_track_variant)
     except DoesNotExist:
         track = Track(name=data_track_name, variant=data_track_variant).save()
-
-    print(track.to_json())
 
     # Fetch or store time
     try:
@@ -118,8 +110,6 @@ def submit_lap_time():
     except DoesNotExist:
         lap_time = LapTime(driver=driver, car=car, track=track, time=data_lap_time,
                            session_type=data_session_type, recorded_at=data_recorded_at).save()
-
-    print(lap_time.to_json())
 
     return Response(None, mimetype='application/json')
 

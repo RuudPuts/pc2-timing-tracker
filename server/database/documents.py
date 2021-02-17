@@ -14,6 +14,10 @@ class Track(db.Document):
     name = db.StringField(required=True, unique=True)
     variant = db.StringField(required=True)
 
+    @property
+    def display_variant(self):
+        return self.variant.replace("_", " ")
+
 
 class LapTime(db.Document):
     driver = db.ReferenceField(Driver, required=True)

@@ -1,6 +1,7 @@
-requests
 binio
-pymongo
+bootstrap-flask
 flask
 flask-mongoengine
-bootstrap-flask
+mongoengine
+pymongo
+requests
