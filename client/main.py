@@ -59,4 +59,5 @@ if __name__ == '__main__':
         log_game_state(game_state)
 
         if game_state.last_lap_time and game_state.last_lap_time != last_sent_lap_time:
-            last_sent_lap_time = lap_time_sender.send_lap_time(game_state)
+            if lap_time_sender.send_lap_time(game_state):
+                last_sent_lap_time = last_sent_lap_time

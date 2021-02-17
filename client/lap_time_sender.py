@@ -15,25 +15,28 @@ class LapTimeSender:
         self.__send_cached_lap_times()
 
     def send_lap_time(self, game_state: GameState):
-        data = {
-            'date': round(time.time()),
-            'driver': game_state.driver,
-            'track': game_state.track.to_json(),
-            'car': game_state.car.to_json(),
-            'time': game_state.last_lap_time,
-            'session_type': 'race' if len(game_state.participants or []) > 1 else 'time-trial'
-        }
+        if game_state.has_player_data and game_state.has_telemetry_data:
+            data = {
+                'date': round(time.time()),
+                'driver': game_state.driver,
+                'track': game_state.track.to_json(),
+                'car': game_state.car.to_json(),
+                'time': game_state.last_lap_time,
+                'session_type': 'race' if len(game_state.participants or []) > 1 else 'time-trial'
+            }
 
-        if True:  # game_state.has_player_data and game_state.has_telemetry_data:
             print("Sending laptime")
 
             if self.__post_lap_time(data):
                 self.__send_cached_lap_times()
             else:
                 self.__cache_lap_time(data)
-        else:
-            print("Game state incomplete, caching laptime")
-            self.__cache_lap_time(data)
+
+            return True
+        return False
+        # else:
+        #     print("Game state incomplete, caching laptime")
+        #     self.__cache_lap_time(data)
 
     @staticmethod
     def __cache_lap_time(data):
