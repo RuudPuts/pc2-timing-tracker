@@ -65,7 +65,7 @@ class GameState:
         participants = packet['participants']
         self.driver = participants[0]["name"] if len(participants) > 0 else None
         self.car = Car(packet["carName"], packet["carClassName"])
-        self.track = Car(packet["trackLocation"], packet["trackVariation"])
+        self.track = Track(packet["trackLocation"], packet["trackVariation"])
 
     def __process_participants(self):
         if self.__last_telemetry_packet is None or self.__last_participants_info_packet is None:
