@@ -31,9 +31,6 @@ class LapTimeSender:
                 self.__send_cached_lap_times()
             else:
                 self.__cache_lap_time(data)
-
-            return True
-        return False
         # else:
         #     print("Game state incomplete, caching laptime")
         #     self.__cache_lap_time(data)

@@ -39,7 +39,7 @@ def log_game_state(state: GameState):
     if state.has_participants_data:
         log.append("Leaderboard")
         for participant in state.participants:
-            print("{}. {} - Lap {}".format(participant.position, participant.name, participant.current_lap))
+            log.append("{}. {} - Lap {}".format(participant.position, participant.name, participant.current_lap))
 
     print("\n".join(log))
 
@@ -59,5 +59,5 @@ if __name__ == '__main__':
         log_game_state(game_state)
 
         if game_state.last_lap_time and game_state.last_lap_time != last_sent_lap_time:
-            if lap_time_sender.send_lap_time(game_state):
-                last_sent_lap_time = last_sent_lap_time
+            last_sent_lap_time = game_state.last_lap_time
+            lap_time_sender.send_lap_time(game_state)
