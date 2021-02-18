@@ -50,6 +50,7 @@ class GameState:
         self.__last_telemetry_packet = packet
 
         self.current_lap = packet['participants'][0]['currentLap']
+        self.current_lap_valid = packet['lapInvalidated']
         self.speed = packet['speed']
         self.current_gear = packet['gear']
         self.number_of_gears = packet['numGears']
