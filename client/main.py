@@ -29,10 +29,20 @@ def log_game_state(state: GameState):
         log.append("Speed  {:.0f} Km/h".format(mps2kph(state.speed)))
         log.append("Gear   {}/{}".format(state.current_gear, state.number_of_gears))
         log.append("")
-        log.append("Current lap       {} (lap valid: {})".format(sec2time(state.current_lap_time), "yes" if state.current_lap_valid else "no" ))
+        log.append("Current lap       {} (lap valid: {})".format(sec2time(state.current_lap_time),
+                                                                 "✅ Yes" if state.current_lap_valid else "❌ No"))
         log.append("Last lap          {}".format(sec2time(state.last_lap_time)))
         log.append("Session best lap  {}".format(sec2time(state.session_best_lap_time)))
         log.append("Personal best lap {}".format(sec2time(state.personal_best_lap_time)))
+        log.append("")
+        log.append("")
+
+    if len(state.laps) > 0:
+        log.append("Last 5 laps")
+        for i in range(min(len(state.laps), 5)):
+            lap = state.laps[i]
+            log.append("Lap {} - {} ({})".format(lap.number, lap.time,
+                                                 "✅ Valid" if lap.is_valid else "❌ Invalid"))
         log.append("")
         log.append("")
 
@@ -40,6 +50,8 @@ def log_game_state(state: GameState):
         log.append("Leaderboard")
         for participant in state.participants:
             log.append("{}. {} - Lap {}".format(participant.position, participant.name, participant.current_lap))
+        log.append("")
+        log.append("")
 
     print("\n".join(log))
 
@@ -51,14 +63,16 @@ if __name__ == '__main__':
     packet_receiver = PacketReceiver()
     lap_time_sender = LapTimeSender(launch_arguments.server)
 
-    last_sent_lap_time = None
+    last_sent_lap_number = -1
 
     while True:
         packet = packet_receiver.read_packet()
         game_state.process_packet(packet)
+
         log_game_state(game_state)
 
-        if game_state.last_lap_time and game_state.last_lap_time != last_sent_lap_time:
-            last_sent_lap_time = game_state.last_lap_time
-            if game_state.current_lap_valid:
+        last_lap = game_state.laps[len(game_state.laps) - 1] if len(game_state.laps) > 0 else None
+        if last_lap and last_lap.number != last_sent_lap_number:
+            last_sent_lap_number = last_lap.number
+            if last_lap.is_valid:
                 lap_time_sender.send_lap_time(game_state)

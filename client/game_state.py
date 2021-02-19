@@ -1,4 +1,4 @@
-from models import Car, Participant, Track
+from models import Car, Participant, Track, Lap
 from pcars import Packet, TelemetryPacket, ParticipantInfoStringsPacket
 
 
@@ -21,6 +21,8 @@ class GameState:
         self.session_best_lap_time = None
         self.personal_best_lap_time = None
 
+        self.__current_lap = None
+        self.laps = []
         self.participants = []
 
     def process_packet(self, packet: Packet):
@@ -32,6 +34,7 @@ class GameState:
             print("🔥 Got unknown packet {}".format(packet.__class__.__name__))
             print(packet._data)
 
+        self.__process_lap_time()
         self.__process_participants()
 
     @property
@@ -67,6 +70,15 @@ class GameState:
         self.driver = participants[0]["name"] if len(participants) > 0 else None
         self.car = Car(packet["carName"], packet["carClassName"])
         self.track = Track(packet["trackLocation"], packet["trackVariation"])
+
+    def __process_lap_time(self):
+        if len(self.laps) == 0:
+            self.__current_lap = Lap(self.current_lap - 1, self.last_lap_time, False)
+            self.laps.append(self.__current_lap)
+        elif self.__current_lap.number != self.current_lap:
+            self.laps.append(self.__current_lap)
+
+        self.__current_lap = Lap(self.current_lap, self.current_lap_time, self.current_lap_valid)
 
     def __process_participants(self):
         if self.__last_telemetry_packet is None or self.__last_participants_info_packet is None:
