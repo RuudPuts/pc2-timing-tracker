@@ -6,6 +6,7 @@ from json.decoder import JSONDecodeError
 import requests
 import time
 
+from log_messages import log_message
 from game_state import GameState
 
 
@@ -16,6 +17,8 @@ class LapTimeSender:
 
     def send_lap_time(self, game_state: GameState):
         if game_state.has_player_data and game_state.has_telemetry_data:
+            print("[LapTimeSender] 🔥 Sending lap to server")
+            log_message("[LapTimeSender] 🔥 Sending lap to server")
             data = {
                 'date': round(time.time()),
                 'driver': game_state.driver,
@@ -25,18 +28,19 @@ class LapTimeSender:
                 'session_type': 'race' if len(game_state.participants or []) > 1 else 'time-trial'
             }
 
-            print("Sending laptime")
-
             if self.__post_lap_time(data):
                 self.__send_cached_lap_times()
             else:
                 self.__cache_lap_time(data)
-        # else:
+        else:
+            print("[LapTimeSender] ❌ Lap time not send, game state invalid")
+            log_message("[LapTimeSender] ❌ Lap time not send, game state invalid")
         #     print("Game state incomplete, caching laptime")
         #     self.__cache_lap_time(data)
 
     @staticmethod
     def __cache_lap_time(data):
+        log_message("[LapTimeSender] 💡 Cached lap time to send later")
         file_name = "laptime_{}.json".format(data["date"])
 
         file = open(file_name, "w")
@@ -45,6 +49,8 @@ class LapTimeSender:
 
     def __send_cached_lap_times(self):
         all_cache_files = list(filter(lambda f: bool(re.match(r"laptime_.*?\.json", f)), os.listdir('.')))
+        if len(all_cache_files) > 0:
+            log_message("[LapTimeSender] Sending {} cached lap times".format(len(all_cache_files)))
 
         for file in all_cache_files:
             file_content = open(file, "r").read()
@@ -67,6 +73,14 @@ class LapTimeSender:
                     "Content-Type": "application/json"
                 }
             )
-            return response.status_code == 200
+            success = response.status_code == 200
+
+            if success:
+                log_message("[LapTimeSender] ✅ Lap time sent to server")
+            else:
+                log_message("[LapTimeSender] ❌ Lap time not send, server error")
+
+            return success
         except requests.exceptions.ConnectionError:
+            log_message("[LapTimeSender] ❌ Lap time not send, connection error")
             return False

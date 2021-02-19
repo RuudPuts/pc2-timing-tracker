@@ -4,4 +4,5 @@ flask
 flask-mongoengine
 mongoengine
 pymongo
+prettytable
 requests
