@@ -93,7 +93,7 @@ if __name__ == '__main__':
             if len(game_state.laps) > 1:
                 log_message("[main] 🏁 Lap {} finished - Time {} - Is valid {}"
                             .format(last_lap.number, sec2time(last_lap.time), last_lap.is_valid))
-            if last_lap.is_valid:
+            if last_lap.is_valid and last_lap.time > 0:
                 lap_time_sender.send_lap_time(game_state)
 
         log_game_state(game_state)
