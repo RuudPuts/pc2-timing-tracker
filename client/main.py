@@ -41,10 +41,11 @@ def log_game_state(state: GameState):
 
     if len(state.laps) > 1:
         log.append("Last 5 laps")
+        sorted_laps = sorted(state.laps, key=lambda l: l.number)
 
         table = PrettyTable(['Lap #', 'Time', "Valid"])
-        for i in range(0, min(len(state.laps), 5)):
-            lap = state.laps[len(state.laps) - 2 - i]
+        for i in range(0, min(len(sorted_laps), 5)):
+            lap = sorted_laps[len(sorted_laps) - 2 - i]
             table.add_row([lap.number, lap.time, "✅ Valid" if lap.is_valid else "❌ Invalid"])
         log.append(table.get_string())
         log.append("")
