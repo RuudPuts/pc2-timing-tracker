@@ -50,7 +50,7 @@ def log_game_state(state: GameState):
         log.append("")
         log.append("")
 
-    if state.has_participants_data and len(state.participants) > 0:
+    if state.has_participants_data and len(state.participants) > 0 and state.car and state.track:
         log.append("Leaderboard")
         table = PrettyTable(['Position', 'Driver', "In lap"])
         for participant in state.participants:
